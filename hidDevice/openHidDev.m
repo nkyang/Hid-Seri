@@ -8,7 +8,7 @@ function [handle,wPtr,rPtr] = openHidDev(vendorID,productID)
 %  转换为10进制为VID:1155 PID: 22353
 if ~libisloaded('hidapi')
     loadlibrary('hidapi','hidapi.h');
-    libfunctionsview hidapi
+%     libfunctionsview hidapi
 end
 % 空指针
 nullPtr = libpointer;
