@@ -1,15 +1,18 @@
 function getSeriData()
-addpath seriPort
-seriObj = openSeriPort('COM5');
+addpath('seriPort');
+seriObj = openSeriPort('COM6');
 mf = memmapfile('shareMem.dat',...
     'Writable',false,...
-    'Format',{'uint64',[1 1 1],'ts';'uint8',[1 1],'flag'},...
+    'Format',{'uint64',[1 1],'ts';'uint8',[1 1],'idx';'uint8',[1 1],'flag'},...
     'Repeat',1);
 tStart = mf.Data.ts;
-sfid = fopen('seri.txt','wt+');
+id = mf.Data.idx;
+sfid = fopen(['data\seri',num2str(id),'.txt'],'wt+');
 
-fprintf(sfid,'***Zigbee协调器传来的各个节点RSSI信息***\n');
-fprintf(sfid,'接收时间,接收节点编号，发送节点0，1，2，3，4，5，6，7，8，9，10，11，12，13\n');
+fprintf(sfid,'*****Zigbee协调器传来的各个节点RSSI信息*****\n');
+fprintf(sfid,'Timestamp,Tx ID，R00，R01，R02，R03，R04，R05，R06，R07，R08，R09，R10，R11，R12，R13\n');
+
+fprintf('开始测量');
 while mf.Data.flag 
     % 串口读取协调器发来的数据，每2位16进制数
     Rx_data = fscanf(seriObj, '%2x');
@@ -19,7 +22,8 @@ while mf.Data.flag
     fprintf(sfid,'%2u,',Rx_data);
     fprintf(sfid,'\n');
 end
-fprintf(sfid,'结束采集数据\n');
+fprintf('测量完成');
+
 fclose(sfid);
 closeSeriPort(seriObj)
 clear mf seriObj
