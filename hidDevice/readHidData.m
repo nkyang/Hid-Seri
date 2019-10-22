@@ -16,7 +16,7 @@ end
 time = toc(tStart);
 % 如果读取到的数据是ATD帧（ATD帧返回当前测量值）
 if isequal(rPtr.value(1:3),[65 84 68])
-    data = double(rPtr.value(6))*256 + double(rPtr.value(7));
+    data = double(rPtr.value(5))*65536 + double(rPtr.value(6))*256 + double(rPtr.value(7));
     t = time;
 end
 end
