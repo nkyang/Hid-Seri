@@ -1,0 +1,11 @@
+# Pcode
+*.p
+*.mexw64
+*.mexw32
+
+# MATLAB data
+*.mat
+
+# Binary DATA
+*.dat
+*.bin
