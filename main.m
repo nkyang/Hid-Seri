@@ -12,7 +12,7 @@ mf = memmapfile('shareMem.dat',...
     'Repeat',1);
 % 将参考的时间零点写入到共享的文件映射中
 mf.Data.ts = tic;
-mf.Data.idx = uint8(2);
+mf.Data.idx = uint8(4);
 mf.Data.flag = uint8(1);
 curDty = cd;
 eval(['!matlab -automation -sd ',curDty,' -r getSeriData &']);
