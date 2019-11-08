@@ -1,3 +1,4 @@
+%% ´î½¨ÍøÂç
 layers = [
     imageInputLayer([1 1 156],"Name","input")
     fullyConnectedLayer(128,"Name","fc_1")
@@ -5,7 +6,7 @@ layers = [
     clippedReluLayer(3,"Name","crelu_1")
     fullyConnectedLayer(128,"Name","fc_2")
     batchNormalizationLayer("Name","bn_2")
-    reluLayer("Name","crelu_2")
+    clippedReluLayer(3,"Name","crelu_2")
     fullyConnectedLayer(128,"Name","fc_3")
     batchNormalizationLayer("Name","bn_3")
     clippedReluLayer(3,"Name","crelu_3")
@@ -35,11 +36,11 @@ layers = [
     clippedReluLayer(3,"Name","crelu_11")
     fullyConnectedLayer(2,"Name","fc_12")
     regressionLayer("Name","output")];
+%% ÑµÁ·²ÎÊý
 
 options = trainingOptions('adam', ...
-...    'Momentum',0.9, ...
     'MiniBatchSize',8192, ...
-    'MaxEpochs',30, ...
+    'MaxEpochs',40, ...
     'Shuffle','every-epoch', ...
     'InitialLearnRate',1e-3, ...
     'LearnRateSchedule','piecewise',...
@@ -52,5 +53,13 @@ options = trainingOptions('adam', ...
     'ExecutionEnvironment','cpu',...
     'Plots','training-progress',...);
     'GradientThreshold',6);
+%% ÑµÁ·
+net = trainNetwork(Xtrain,Ytrain,layers,options);
 
- net = trainNetwork(Xtrain,Ytrain,layers,options);
+%% Ô¤²â
+X = reshape(predictor',1,1,156,[]);
+Ypred = predict(net,X);
+err = Ypred - response; 
+posErr = vecnorm(err');
+
+ 
